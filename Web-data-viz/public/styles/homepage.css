@@ -1,0 +1,101 @@
+:root {
+    /* Fundos */
+    --bg: #F8F4ED;
+    --bg-secondary: #E8DCCB;
+
+    /* Marrom */
+    --primary: #5C3D2E;
+    --primary-hover: #4A3024;
+    --primary-active: #3B251B;
+
+    /* Amarelo */
+    --accent: #D4A017;
+    --accent-hover: #BE8F15;
+    --accent-active: #A87E12;
+
+    /* Texto */
+    --text: #2B1D17;
+    --text-secondary: #6D5A4F;
+
+    /* Bordas */
+    --border: #C7B299;
+    --border-hover: #9B7B67;
+}
+
+.banner{
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    filter: grayscale(100%);
+    background-image: url(../assets/imgs/rioDeJaneiroFundo.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.banner .text{
+    font-size: 20vh;
+    font-family: 'Times New Roman', Times, serif;
+
+    text-align: center;
+
+    color: var(--accent-hover);
+}
+
+.banner:hover{
+    filter: grayscale(0);
+}
+
+.banner:hover .text{
+    transform: scale(120%);
+}
+
+.aboutMe{
+    width: 100%;
+    height: 90vh;
+
+    margin-top: 10vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.aboutMe .left{
+    width: 50vh;
+    height: 50vh;
+}
+
+.aboutMe img{
+    width: 100%;
+    height: 100%;
+
+    border-radius: 2vh;
+}
+
+.aboutMe .right{
+    width: 25vw;
+    height: 30vh;
+
+    font-size: 2.5vh;
+    font-weight: 500;
+
+    color: var(--text);
+}
+
+.footer{
+    width: 100%;
+    height: 10vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer .text{
+    text-align: center;
+    color: var(--text);
+}

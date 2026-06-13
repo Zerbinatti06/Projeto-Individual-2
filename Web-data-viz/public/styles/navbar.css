@@ -1,0 +1,96 @@
+.navbar{
+    position: fixed;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 95%;
+    height: 7vh;
+
+    margin: 3vh;
+    border-radius: 5vh;
+
+    background-color: var(--primary-active);
+}
+
+.navbar .logo{
+    width: 10vw;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.navbar .logo .circle{
+    width: 5vh;
+    height: 5vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-left: 0.5vw;
+
+    border-radius: 100%;
+    background-color: #BE8F15;
+}
+
+.navbar img{
+    filter: invert(10%) sepia(20%) saturate(700%) hue-rotate(340deg) brightness(85%) contrast(95%);
+}
+
+.navbar .links{
+    width: 30vw;
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.navbar .links .link a{
+    font-size: 2vh;
+    text-decoration: none;
+
+    color: #D4A017;
+}
+
+.navbar .links .link a:hover{
+    color: #BE8F15;
+}
+
+.navbar .buttons{
+    width: 10vw;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.navbar button{
+    width: 10vw;
+    height: 4vh;
+
+    margin-right: 1vw;
+    font-size: 1.5vh;
+
+    border-radius: 5vh;
+    border: none;
+}
+
+#btnLogin{
+    background-color: #D4A017;
+    color: #2B1D17;
+}
+
+#btnLogin:hover{
+    background-color: #BE8F15;
+    color: #4A3024;
+}
+
+.navbar .buttons .separator{
+    width: 0.1vw;
+    height: 5vh;
+
+    background-color: #E7C45A;
+}

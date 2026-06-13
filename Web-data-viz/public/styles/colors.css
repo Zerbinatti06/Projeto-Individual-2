@@ -1,0 +1,23 @@
+:root {
+    /* Fundos */
+    --bg: #F8F4ED;
+    --bg-secondary: #E8DCCB;
+
+    /* Marrom */
+    --primary: #5C3D2E;
+    --primary-hover: #4A3024;
+    --primary-active: #3B251B;
+
+    /* Amarelo */
+    --accent: #D4A017;
+    --accent-hover: #BE8F15;
+    --accent-active: #A87E12;
+
+    /* Texto */
+    --text: #2B1D17;
+    --text-secondary: #6D5A4F;
+
+    /* Bordas */
+    --border: #C7B299;
+    --border-hover: #9B7B67;
+}
