@@ -26,6 +26,8 @@
     width: 100vw;
     height: 100vh;
 
+    z-index: 2;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -51,6 +53,70 @@
 
 .banner:hover .text{
     transform: scale(120%);
+}
+
+.quote{
+    width: 100%;
+    height: 90vh;
+
+    margin-top: 10vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.quote .left{
+    width: 50vh;
+    height: 50vh;
+}
+
+.quote .right{
+    width: 25vw;
+    height: fit-content;
+
+    font-size: 2.5vh;
+    font-weight: 500;
+
+    color: var(--text);
+
+}
+
+.quote-quote-open{
+    position: relative;
+    font-size: 10vh;
+    font-family: 'Courier New', Courier, monospace;
+
+    color: var(--accent);
+
+    right: 10vh;
+}
+
+.quote-quote-close{
+    position: relative;
+    font-size: 10vh;
+    font-family: 'Courier New', Courier, monospace;
+
+    color: var(--accent);
+
+    left: 50vh;
+}
+
+.quote-text{
+    font-size: 4vh;
+}
+
+.quote-author{
+    margin-top: 5vh;
+    font-weight: bold;
+    text-align: right;
+}
+
+.quote img{
+    width: 100%;
+    height: 100%;
+
+    border-radius: 2vh;
 }
 
 .aboutMe{
