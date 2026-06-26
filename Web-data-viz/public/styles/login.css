@@ -1,12 +1,72 @@
+body,html{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--bg-secondary);
+}
+
 .login-container{
-    height: 100vh;
-    width: 100vw;
+    height: fit-content;
+    width: fit-content;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    padding: 2vh 5vh;
+    border-radius: 1vh;
+    background-color: var(--bg);
 }
 
+.title{
+    padding: 3vh;
+    font-size: 4vh;
+
+    color: var(--text);
+}
+
+.inputs{
+    display: flex;
+    flex-direction: column;
+
+    gap: 3vh;
+}
+
+.input{
+    border-bottom: 1px solid var(--accent);
+}
+
+.login-container input{
+    border: none;
+    background-color: transparent;
+    color: var(--text-secondary);
+}
+
+.btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 5vh 0;
+    width: 100%;
+}   
+
+.btn button{
+    width: 70%;
+    height: 3vh;
+
+    background-color: var(--primary-active);
+    border: none;
+    border-radius: 1vh;
+    color: var(--bg);
+}
+
+p{
+    font-size: 1vh;
+
+    opacity: 80%;
+}
 
 
