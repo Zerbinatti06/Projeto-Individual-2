@@ -1,58 +1,72 @@
--- Arquivo de apoio, caso você queira criar tabelas como as aqui criadas para a API funcionar.
--- Você precisa executar os comandos no banco de dados para criar as tabelas,
--- ter este arquivo aqui não significa que a tabela em seu BD estará como abaixo!
+CREATE DATABASE Tamarineira;
+USE Tamarineira;
 
-/*
-comandos para mysql server
-*/
-
-CREATE DATABASE aquatech;
-
-USE aquatech;
-
-CREATE TABLE empresa (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	razao_social VARCHAR(50),
-	cnpj CHAR(14),
-	codigo_ativacao VARCHAR(50)
+CREATE TABLE `user`(
+  id int NOT NULL AUTO_INCREMENT,
+  name varchar(255) NOT NULL,
+  email varchar(255) NOT NULL,
+  password varchar(255) NOT NULL,
+  createdAt datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY email (email)
 );
 
-CREATE TABLE usuario (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	nome VARCHAR(50),
-	email VARCHAR(50),
-	senha VARCHAR(50),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
+CREATE TABLE quiz (
+  id int NOT NULL AUTO_INCREMENT,
+  userId int NOT NULL,
+  theme varchar(30) DEFAULT NULL,
+  title varchar(255) NOT NULL,
+  points int DEFAULT NULL,
+  description varchar(255) NOT NULL,
+  createdAt datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY quiz_user (userId),
+  CONSTRAINT quiz_user FOREIGN KEY (userId) REFERENCES user (id) ON DELETE CASCADE
 );
 
-CREATE TABLE aviso (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	titulo VARCHAR(100),
-	descricao VARCHAR(150),
-	fk_usuario INT,
-	FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
+CREATE TABLE question (
+  id int NOT NULL AUTO_INCREMENT,
+  quizId int NOT NULL,
+  question varchar(255) NOT NULL,
+  PRIMARY KEY (id),
+  KEY question_quiz (quizId),
+  CONSTRAINT question_quiz FOREIGN KEY (quizId) REFERENCES quiz (id) ON DELETE CASCADE
 );
 
-create table aquario (
-/* em nossa regra de negócio, um aquario tem apenas um sensor */
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	descricao VARCHAR(300),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
+CREATE TABLE answer (
+  id int NOT NULL AUTO_INCREMENT,
+  questionId int NOT NULL,
+  text varchar(255) NOT NULL,
+  isRight tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (id),
+  KEY answer_question (questionId),
+  CONSTRAINT answer_question FOREIGN KEY (questionId) REFERENCES question (id) ON DELETE CASCADE
 );
 
-/* esta tabela deve estar de acordo com o que está em INSERT de sua API do arduino - dat-acqu-ino */
-
-create table medida (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	temperatura DECIMAL,
-	momento DATETIME,
-	fk_aquario INT,
-	FOREIGN KEY (fk_aquario) REFERENCES aquario(id)
+CREATE TABLE play (
+  id int NOT NULL AUTO_INCREMENT,
+  userId int NOT NULL,
+  quizId int NOT NULL,
+  wrong int NOT NULL DEFAULT '0',
+  `right` int NOT NULL DEFAULT '0',
+  startedAt datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY play_user (userId),
+  KEY play_quiz (quizId),
+  CONSTRAINT play_quiz FOREIGN KEY (quizId) REFERENCES quiz (id) ON DELETE CASCADE,
+  CONSTRAINT play_user FOREIGN KEY (userId) REFERENCES user (id) ON DELETE CASCADE
 );
 
-insert into empresa (razao_social, codigo_ativacao) values ('Empresa 1', 'ED145B');
-insert into empresa (razao_social, codigo_ativacao) values ('Empresa 2', 'A1B2C3');
-insert into aquario (descricao, fk_empresa) values ('Aquário de Estrela-do-mar', 1);
-insert into aquario (descricao, fk_empresa) values ('Aquário de Peixe-dourado', 2);
+CREATE TABLE play_answer (
+  id int NOT NULL AUTO_INCREMENT,
+  playId int NOT NULL,
+  questionId int NOT NULL,
+  answerId int NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_play_question (playId,questionId),
+  KEY pa_question (questionId),
+  KEY pa_answer (answerId),
+  CONSTRAINT pa_answer FOREIGN KEY (answerId) REFERENCES answer (id) ON DELETE CASCADE,
+  CONSTRAINT pa_play FOREIGN KEY (playId) REFERENCES play (id) ON DELETE CASCADE,
+  CONSTRAINT pa_question FOREIGN KEY (questionId) REFERENCES question (id) ON DELETE CASCADE
+);
