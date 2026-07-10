@@ -13,7 +13,7 @@ var HOST_APP = process.env.APP_HOST;
 
 var app = express();
 
-var usuarioRouter = require("./src/routes/usuarios");
+var userRouter = require("./src/routes/user");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -21,18 +21,18 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(cors());
 
-app.use("/usuarios", usuarioRouter);
+app.use("/user", userRouter);
 
-app.listen(PORTA_APP, function () {
+app.listen(PORTA_APP, () => {
     console.log(`
  /$$$$$$$$                                          /$$                     /$$                   
 |__  $$__/                                         |__/                    |__/                   
    | $$  /$$$$$$  /$$$$$$/$$$$   /$$$$$$   /$$$$$$  /$$ /$$$$$$$   /$$$$$$  /$$  /$$$$$$  /$$$$$$ 
    | $$ |____  $$| $$_  $$_  $$ |____  $$ /$$__  $$| $$| $$__  $$ /$$__  $$| $$ /$$__  $$|____  $$
-   | $$  /$$$$$$$| $$ \  $$ \  $$ /$$$$$$$|  $$  \__/  |$$| $$  \  $$| $$$$$$$$| $$| $$  \__ / /$$$$$$$
+   | $$  /$$$$$$$| $$ \  $$ \  $$ /$$$$$$$ | $$  \ __/| $$| $$  \  $$| $$$$$$$$| $$| $$  \__ / /$$$$$$$
    | $$ /$$__  $$| $$ | $$ | $$ /$$__  $$| $$      | $$| $$  | $$| $$_____/| $$| $$      /$$__  $$
-   | $$|  $$$$$$$| $$ | $$ | $$|  $$$$$$$| $$      | $$| $$  | $$|  $$$$$$$| $$| $$     |  $$$$$$$
-   |__/ \_______/|__/ |__/ |__/ \_______/|__/      |__/|__/  |__/ \_______/|__/|__/      \_______/
+   | $$|  $$$$$$$| $$ | $$ | $$|  $$$$$$$| $$      | $$| $$  | $$|  $$$$$$$| $$| $$      | $$$$$$$
+   |__/ \_______/|__/ |__/ |__/   \_______/|__/      |__/|__/  |__/ \_______/ |__/|__/       \_______/
 
 
     Servidor rodando em: http://${HOST_APP}:${PORTA_APP}

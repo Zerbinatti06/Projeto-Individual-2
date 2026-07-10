@@ -15,15 +15,111 @@
             <h1 class="title">LOGIN</h1>
             <div class="inputs">
                 <div class="input">
-                    <input type="text" placeholder="Email">
+                    <input type="text" placeholder="Email" id="inEmail">
                 </div>
                 <div class="input">
-                    <input type="text" placeholder="Senha">
+                    <input type="text" placeholder="Senha" id="inPass">
                 </div>
             </div>
-            <div class="btn"><button>Logar-se</button></div>
-            <p>Não tem uma conta? <span><a href="./register.html">Registrar-se</a></span></p>
+            <span id="msg"></span>
+            <div class="btn"><button onclick="init(inEmail.value, inPass.value)">Logar-se</button></div>
+            <p>Não tem uma conta? <span><a href="./register.html" style="color: var(--accent);">Registrar-se</a></span></p>
         </div>
     </div>
 </body>
+<script>
+    function verifyEmailInputs(email){
+        if (!email) return false;
+
+        if (!email.includes("@")) return false;
+
+        const partes = email.split("@");
+
+        // Deve haver exatamente um @
+        if (partes.length !== 2) return false;
+
+        const usuario = partes[0];
+        const dominio = partes[1];
+
+        // Não pode estar vazio antes ou depois do @
+        if (usuario.length === 0 || dominio.length === 0) return false;
+
+        // O domínio precisa ter pelo menos um ponto
+        if (!dominio.includes(".")) return false;
+
+        const dominioPartes = dominio.split(".");
+
+        // Nenhuma parte do domínio pode estar vazia
+        for (let i = 0; i < dominioPartes.length; i++) {
+            if (dominioPartes[i].length === 0) return false;
+        }
+
+        return true;
+    }
+
+    function verifyPasswordInputs(password){
+        let hasLetter = false;
+        let hasNumber = false;
+
+        if(!password) return false;
+
+        if(password.length < 8 || password.length > 16) return false;
+
+        for(let i = 0; i < password.length; i++){
+            let char = password[i];
+
+            if((char >= "a" && char <= "z") || (char >= "A" && char <= "Z")) hasLetter = true;
+            if(char >= "0" && char <= "9") hasNumber = true;
+
+            if(hasLetter && hasNumber) break;
+        }
+
+        return hasLetter && hasNumber
+    }
+
+    function login(email, password){
+        fetch('/user/verify', {
+            method:"POST",
+            headers:{
+                "Content-type":"application/json"
+            },
+            body:JSON.stringify({
+                email:email,
+                pass:password
+            })
+        })
+        .then(response => {
+            response.json()
+            .then(response => {
+                if(response.length > 0){
+                    
+                    sessionStorage.setItem("id", response[0].id);
+                    sessionStorage.setItem("username", response[0].name);
+                    
+                    window.location = '/';
+                    return;
+                }
+
+                msgError();
+            })
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+
+    function msgError(){
+        msg.innerText = "Credenciais incorretas, tente novamente!"
+    }
+
+    function init(email, pass){
+        if(verifyEmailInputs(email) && verifyPasswordInputs(pass)){
+            login(email, pass)
+
+            return;
+        }
+
+        msgError()
+    }
+</script>
 </html>
