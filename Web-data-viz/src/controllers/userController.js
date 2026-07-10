@@ -1,4 +1,3 @@
-const { response } = require("express");
 var userModel = require("../models/userModel");
 
 function verify(req, res) {

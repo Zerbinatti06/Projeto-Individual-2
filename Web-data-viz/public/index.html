@@ -81,6 +81,7 @@
     function openQuiz(){
         if(!isLogged()){
             window.location = "login.html"
+            return;
         }
 
         let quiz = document.getElementsByClassName("quiz");
