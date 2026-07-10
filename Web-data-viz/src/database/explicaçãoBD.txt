@@ -1,0 +1,9 @@
+Minha modelagem de dados foi feita de forma simples, pensando nos requisitos atuais do projeto, mas também deixando espaço para possíveis melhorias no futuro.
+
+Ela pode ser dividida em duas partes principais: uma focada no usuário e outra focada no quiz.
+
+A primeira parte é composta pelas tabelas user, play e play_answer. A tabela user armazena os dados dos usuários cadastrados. A tabela play registra cada vez que um usuário realiza o quiz. Já a tabela play_answer armazena as respostas dadas em cada tentativa, relacionando o usuário, o quiz, a questão e a resposta escolhida.
+
+A segunda parte é composta pelas tabelas quiz, question e answer. A tabela quiz guarda as informações do quiz, a tabela question armazena as questões e a tabela answer contém as alternativas de cada questão, além de indicar qual delas é a correta.
+
+Embora o projeto atualmente possua apenas um quiz, essa modelagem permite que, no futuro, seja possível adicionar novos quizzes sem a necessidade de grandes alterações no banco de dados. Além disso, ela também permite que um usuário realize o mesmo quiz mais de uma vez, mantendo o histórico de cada tentativa.
