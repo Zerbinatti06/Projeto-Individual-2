@@ -1,3 +1,4 @@
+const { response } = require("express");
 var userModel = require("../models/userModel");
 
 function verify(req, res) {
@@ -71,7 +72,39 @@ function register(req, res) {
     })
 }
 
+function registerPlay(req, res){
+    let userId = req.body.id;
+    let quizId = req.body.quizId;
+    let wrong = req.body.wrong;
+    let right = req.body.right;
+
+    userModel.registerPlay(userId, quizId, wrong, right)
+    .then(response => {
+        res.status(200).send({id: response.insertId});
+    })
+    .catch(err => {
+        res.status(500).send("Erro ao salvar Play");
+        console.log(err)
+    })
+}
+
+function registerPlayAnswer(req, res){
+    let playId = req.body.playId;
+    let questionId = req.body.questionId;
+    let answerId = req.body.answerId;
+
+    userModel.registerPlayAnswer(playId, questionId, answerId)
+    .then(response => {
+        res.status(200).send("Resposta salva com sucesso")
+    })
+    .catch(err => {
+        res.status(500).send("Erro ao salvar resposta")
+    })
+}
+
 module.exports = {
     verify,
-    register
+    register,
+    registerPlay,
+    registerPlayAnswer
 }

@@ -12,4 +12,12 @@ router.post("/verify", function (req, res) {
     userController.verify(req, res);
 });
 
+router.post("/register/play", function (req, res) {
+    userController.registerPlay(req, res);
+});
+
+router.post("/register/answer", function (req, res) {
+    userController.registerPlayAnswer(req, res);
+});
+
 module.exports = router;
