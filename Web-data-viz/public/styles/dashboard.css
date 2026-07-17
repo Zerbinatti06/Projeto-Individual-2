@@ -1,0 +1,158 @@
+body{
+    background:var(--bg);
+}
+
+main{
+    width:100vw;
+    height:100vh;
+    display:flex;
+}
+
+.left{
+    width:75%;
+    padding:3vh;
+    display:flex;
+    flex-direction:column;
+    gap:2vh;
+}
+
+.right{
+    width:25%;
+    padding:3vh 3vh 3vh 0;
+}
+
+.header{
+    display:flex;
+    flex-direction:column;
+    gap:.5vh;
+}
+
+.title{
+    font-size:5vh;
+    font-weight:bold;
+    color:var(--primary);
+}
+
+.subtitle{
+    color:var(--text-secondary);
+}
+
+.kpis{
+    display:flex;
+    justify-content:space-between;
+}
+
+.kpi{
+    width:31%;
+    height:15vh;
+    border:2px solid var(--border);
+    border-radius:1vh;
+    background:var(--bg-secondary);
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+.kpi .value{
+    font-size:5vh;
+    font-weight:bold;
+    color:var(--accent);
+}
+
+.kpi .label{
+    color:var(--text);
+}
+
+.charts{
+    flex:1;
+    display:flex;
+    justify-content:space-between;
+}
+
+.chartCard{
+    width:48%;
+    height:60vh;
+    padding:2vh;
+    border:2px solid var(--border);
+    border-radius:1vh;
+    background:var(--bg-secondary);
+
+    display:flex;
+    flex-direction:column;
+}
+
+.chartTitle{
+    margin-bottom:2vh;
+    font-size:2.2vh;
+    font-weight:bold;
+    color:var(--primary);
+}
+
+.chartCard canvas{
+    width:100% !important;
+    height:100% !important;
+}
+
+.ranking{
+    width:100%;
+    height:100%;
+
+    border:2px solid var(--border);
+    border-radius:1vh;
+    background:var(--bg-secondary);
+
+    display:flex;
+    flex-direction:column;
+
+    padding:2vh;
+    box-sizing:border-box;
+}
+
+.rankingTitle{
+    font-size:3vh;
+    font-weight:bold;
+    color:var(--primary);
+
+    margin-bottom:2vh;
+}
+
+#rankingUsers{
+    display:flex;
+    flex-direction:column;
+    gap:1vh;
+}
+
+.user{
+    height:8vh;
+
+    border:1px solid var(--border);
+    border-radius:1vh;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 1.5vw;
+
+    background:var(--bg);
+}
+
+.user .position{
+    font-weight:bold;
+    color:var(--primary);
+}
+
+.user .name{
+    color:var(--text);
+}
+
+.user .points{
+    color:var(--accent);
+    font-weight:bold;
+}
+
+.mainUser{
+    border:2px solid var(--accent);
+}

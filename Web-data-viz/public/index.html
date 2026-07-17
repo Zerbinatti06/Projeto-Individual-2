@@ -99,19 +99,19 @@ function mountQuiz(){
         </div>
     `;
 
-    let answers = `<div class="answers">`;
+    let answersDiv = `<div class="answers">`;
 
     question.answers.forEach((answer,index)=>{
         let selected = selectedAnswers[currentQuestion - 1] == index ? "selected" : "";
 
-        answers += `
+        answersDiv += `
             <button class="answer ${selected}" onclick="selectAnswer(${index}, ${answer.id}, ${answer.questionId})">
                 ${answer.text}
             </button>
         `;
     });
 
-    answers += `</div>`;
+    answersDiv += `</div>`;
 
     let actions = `
         <div class="quiz-actions">
@@ -128,7 +128,7 @@ function mountQuiz(){
     quizContent.innerHTML = `
         ${quizTop}
         <div class="question">${question.question}</div>
-        ${answers}
+        ${answersDiv}
         ${actions}
     `;
 
@@ -142,10 +142,11 @@ function setProgress(question){
 }
 
 function selectAnswer(index, id, questionId){
-    answers.push({
+    answers[currentQuestion - 1] = {
         ansId:id,
         questionId:questionId
-    })
+    }
+
     selectedAnswers[currentQuestion - 1] = index;
     mountQuiz();
 }
@@ -171,7 +172,7 @@ function previousQuestion(){
     }
 }
 
-function finishQuiz(){
+function countRights(){
     let rights = 0;
 
     quiz.questions.forEach((question,index)=>{
@@ -181,6 +182,13 @@ function finishQuiz(){
             rights++;
         }
     });
+
+    return rights;
+}
+
+function finishQuiz(){
+
+    let rights = countRights();
 
     let percent = Math.round((rights / quiz.questions.length) * 100);
 
@@ -259,5 +267,57 @@ function isLogged(){
     return sessionStorage.getItem("id") != null;
 }
 
+function gotoRanking(){
+    let rights = countRights()
 
+    savePlay(sessionStorage.getItem("id"), 1, (quiz.questions.length - rights), rights);
+}
+
+function saveAnswers(playId, questionId, answerId){
+    return fetch('user/register/answer', {
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+            playId:playId,
+            questionId:questionId,
+            answerId:answerId,
+        })
+    })
+    .then(res => {
+        return res.ok;
+    })
+    .catch(err => {
+        console.log("erro ao salvar answer", err)
+    })
+}
+
+function savePlay(userId, quizId, wrong, right){
+    fetch('user/register/play', {
+        method:"POST",
+        headers:{
+            "Content-type":"application/json"
+        },
+        body:JSON.stringify({
+            id: userId,
+            quizId: quizId,
+            wrong: wrong,
+            right: right
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        Promise.all(
+            answers.map(ans => {
+                return saveAnswers(data.id, ans.questionId, ans.ansId)
+            })
+        )
+        .then(() => window.location = "/dashboard")
+        .catch(err => console.log("Erro ao tranformar Play em json", err))
+        })
+    .catch(err => {
+        console.log("Erro ao salvar play", err)
+    })
+}
 </script>

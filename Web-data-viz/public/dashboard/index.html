@@ -1,11 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="../styles/colors.css">
+    <link rel="stylesheet" href="../styles/dashboard.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-    <h1>Dashboard</h1>
+    <main>
+    <div class="left">
+        <div class="header">
+            <div class="title">Dashboard</div>
+            <div class="subtitle">Veja seu desempenho no Quiz Tamarineira</div>
+        </div>
+        <div class="kpis">
+            <div class="kpi">
+                <div class="value" id="kpiQuizzes"></div>
+                <div class="label">Quiz Totais</div>
+            </div>
+            <div class="kpi">
+                <div class="value" id="kpiAccuracy"></div>
+                <div class="label">Aproveitamento</div>
+            </div>
+            <div class="kpi">
+                <div class="value" id="kpiBestScore"></div>
+                <div class="label">Melhor Pontuação</div>
+            </div>
+        </div>
+        <div class="charts">
+            <div class="chartCard">
+                <div class="chartTitle">
+                    Acertos x Erros
+                </div>
+                <canvas id="chartCompare"></canvas>
+            </div>
+            <div class="chartCard">
+                <div class="chartTitle">
+                    Evolução das partidas
+                </div>
+                <canvas id="chartHistory"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <div class="ranking">
+            <div class="rankingTitle">
+                Ranking Geral
+            </div>
+            <div id="rankingUsers">
+            </div>
+        </div>
+    </div>
+</main>
 </body>
+
 </html>
+<script>
+    let userId = sessionStorage.getItem("id");
+
+    function init(){
+        getKpis();
+        getDifference();
+        getLastMatches();
+        getRanking();
+    }
+
+    function getKpis(){
+        fetch(`/dashboard/kpis/${userId}`)
+        .then(res => {
+            res.json()
+            .then(data => {
+                kpiQuizzes.innerHTML = data[0].totalPlays;
+                kpiAccuracy.innerHTML = data[0].accuracy+"%";
+                kpiBestScore.innerHTML = data[0].bestScore;
+            })
+        })
+        .catch(err => {
+            console.log("Erro ao pegar Kpis")
+        })
+    }
+
+    function getDifference(){
+        fetch(`/dashboard/difference/${userId}`)
+        .then(res => {
+            res.json()
+            .then(data => {
+                const ctxPizza = document.getElementById('chartCompare').getContext("2d");
+                new Chart(ctxPizza, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Acertos', 'Erros'],
+                        datasets: [{
+                            data: [data[0].rights, data[0].wrongs], // substitui pelos dados vindos do banco
+                            backgroundColor: [
+                                '#D4A017', // accent
+                                '#5C3D2E'  // primary
+                            ],
+                            borderColor: '#F8F4ED',
+                            borderWidth: 3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: '#2B1D17',
+                                    font: {
+                                        size: 14
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: '#5C3D2E',
+                                titleColor: '#F8F4ED',
+                                bodyColor: '#F8F4ED'
+                            }
+                        }
+                    }
+                });
+            })
+        })
+        .catch(err => {
+            console.log("Erro ao pegar diferença (acertos x erros)")
+        })
+    }
+
+    function getLastMatches(){
+        fetch(`/dashboard/lastMatches/${userId}`)
+        .then(res => res.json())
+        .then(data => {
+            const labels = data.map((play, index) => `Partida ${index + 1}`);
+            const rights = data.map(play => play.right);
+            const wrongs = data.map(play => play.wrong);
+
+            const ctx = document.getElementById("chartHistory");
+
+            new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "Acertos",
+                            data: rights,
+                            borderColor: "#D4A017",
+                            backgroundColor: "#D4A017",
+                            tension: 0.3
+                        },
+                        {
+                            label: "Erros",
+                            data: wrongs,
+                            borderColor: "#5C3D2E",
+                            backgroundColor: "#5C3D2E",
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: "#2B1D17"
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: "#2B1D17"
+                            },
+                            grid: {
+                                color: "#C7B299"
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            max: 5,
+                            ticks: {
+                                stepSize: 1,
+                                color: "#2B1D17"
+                            },
+                            grid: {
+                                color: "#C7B299"
+                            }
+                        }
+                    }
+                }
+            });
+        })
+    }
+
+    function getRanking(){
+        fetch('/dashboard/ranking')
+        .then(res => res.json())
+        .then(data => {
+            let html = ``
+
+            for(let i =0; i < data.length; i++){
+                html += `
+                    <div class="user ${data[i].id == sessionStorage.getItem("id") ? "Você" : ""}">
+                        <div class="left">
+                            <span class="position">#${i + 1}</span>
+                            <span class="name">${data[i].name}</span>
+                        </div>
+                        <span class="points">${data[i].points} pts</span>
+                    </div>
+                `
+            }
+
+            document.getElementById("rankingUsers").innerHTML = html;
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
+    init()
+</script>
