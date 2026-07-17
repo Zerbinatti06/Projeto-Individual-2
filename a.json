@@ -1,0 +1,105 @@
+{
+    "id": 1,
+    "userId": 1,
+    "theme": "História do Samba",
+    "title": "Quiz: História do Samba",
+    "description": "Descubra quanto você sabe sobre a história do samba brasileiro.",
+    "createdAt": "2026-07-16T21:49:56.000Z",
+    "questions": [
+        {
+            "id": 1,
+            "quizId": 1,
+            "question": "Em qual cidade o samba moderno se consolidou?",
+            "answers": [
+                {
+                    "id": 1,
+                    "questionId": 1,
+                    "text": "Rio de Janeiro",
+                    "isRight": 1
+                },
+                {
+                    "id": 2,
+                    "questionId": 1,
+                    "text": "Salvador",
+                    "isRight": 0
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "quizId": 1,
+            "question": "Quem é conhecido como o Rei do Samba?",
+            "answers": [
+                {
+                    "id": 3,
+                    "questionId": 2,
+                    "text": "Martinho da Vila",
+                    "isRight": 1
+                },
+                {
+                    "id": 4,
+                    "questionId": 2,
+                    "text": "Zeca Pagodinho",
+                    "isRight": 0
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "quizId": 1,
+            "question": "Em que década surgiu o grupo Fundo de Quintal?",
+            "answers": [
+                {
+                    "id": 5,
+                    "questionId": 3,
+                    "text": "Década de 1970",
+                    "isRight": 1
+                },
+                {
+                    "id": 6,
+                    "questionId": 3,
+                    "text": "Década de 1990",
+                    "isRight": 0
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "quizId": 1,
+            "question": "Qual instrumento é muito utilizado nas rodas de samba?",
+            "answers": [
+                {
+                    "id": 7,
+                    "questionId": 4,
+                    "text": "Pandeiro",
+                    "isRight": 1
+                },
+                {
+                    "id": 8,
+                    "questionId": 4,
+                    "text": "Violino",
+                    "isRight": 0
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "quizId": 1,
+            "question": "Qual destas é uma tradicional escola de samba do Rio de Janeiro?",
+            "answers": [
+                {
+                    "id": 9,
+                    "questionId": 5,
+                    "text": "Mangueira",
+                    "isRight": 1
+                },
+                {
+                    "id": 10,
+                    "questionId": 5,
+                    "text": "Corinthians",
+                    "isRight": 0
+                }
+            ]
+        }
+    ]
+}

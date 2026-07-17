@@ -70,38 +70,194 @@
         </div>
     </div>
 
-    <div class="quiz">
-        <div class="content">
-
+    <div class="quiz" id="quiz">
+        <div class="content" id="quizContent">
+            
         </div>
     </div>
 </body>
 </html>
 <script>
-    function openQuiz(){
-        if(!isLogged()){
-            window.location = "login.html"
-            return;
-        }
+let quiz;
+let quizContent = document.getElementById("quizContent");
+let currentQuestion = 1;
+let selectedAnswers = [];
+let answers = []
 
-        let quiz = document.getElementsByClassName("quiz");
-        quiz.style.display = "flex"
+function mountQuiz(){
+    let question = quiz.questions[currentQuestion - 1];
+
+    let quizTop = `
+        <div class="quiz-header">
+            <h1 class="quiz-title">${quiz.title}</h1>
+            <div class="progress">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            <span class="progress-text">
+                Questão ${currentQuestion} de ${quiz.questions.length}
+            </span>
+        </div>
+    `;
+
+    let answers = `<div class="answers">`;
+
+    question.answers.forEach((answer,index)=>{
+        let selected = selectedAnswers[currentQuestion - 1] == index ? "selected" : "";
+
+        answers += `
+            <button class="answer ${selected}" onclick="selectAnswer(${index}, ${answer.id}, ${answer.questionId})">
+                ${answer.text}
+            </button>
+        `;
+    });
+
+    answers += `</div>`;
+
+    let actions = `
+        <div class="quiz-actions">
+            <button class="btn-secondary" onclick="previousQuestion()">
+                ← Anterior
+            </button>
+
+            <button class="btn-primary" onclick="nextQuestion()">
+                ${currentQuestion == quiz.questions.length ? "Finalizar" : "Próxima →"}
+            </button>
+        </div>
+    `;
+
+    quizContent.innerHTML = `
+        ${quizTop}
+        <div class="question">${question.question}</div>
+        ${answers}
+        ${actions}
+    `;
+
+    setProgress(currentQuestion);
+}
+
+function setProgress(question){
+    let percent = (question / quiz.questions.length) * 100;
+
+    document.getElementById("progressBar").style.width = `${percent}%`;
+}
+
+function selectAnswer(index, id, questionId){
+    answers.push({
+        ansId:id,
+        questionId:questionId
+    })
+    selectedAnswers[currentQuestion - 1] = index;
+    mountQuiz();
+}
+
+function nextQuestion(){
+    if(selectedAnswers[currentQuestion - 1] == undefined){
+        alert("Selecione uma resposta.");
+        return;
     }
 
-    function gotoDash(){
-        if(isLogged()){
-            window.location = "/dashboard"
-            return;
-        }
+    if(currentQuestion < quiz.questions.length){
+        currentQuestion++;
+        mountQuiz();
+    }else{
+        finishQuiz();
+    }
+}
 
-        window.location = "login.html"
+function previousQuestion(){
+    if(currentQuestion > 1){
+        currentQuestion--;
+        mountQuiz();
+    }
+}
+
+function finishQuiz(){
+    let rights = 0;
+
+    quiz.questions.forEach((question,index)=>{
+        let answer = question.answers[selectedAnswers[index]];
+
+        if(answer.isRight){
+            rights++;
+        }
+    });
+
+    let percent = Math.round((rights / quiz.questions.length) * 100);
+
+    quizContent.innerHTML = `
+        <div class="quiz-finished">
+            <div class="icon">🏆</div>
+            <h1>Parabéns!</h1>
+
+            <div class="quiz-score">
+                Você acertou ${rights} de ${quiz.questions.length} questões.
+            </div>
+
+            <div class="progress">
+                <div class="progress-fill" style="width:${percent}%"></div>
+            </div>
+
+            <div class="quiz-message">
+                Seu aproveitamento foi de ${percent}%.
+            </div>
+
+            <div class="quiz-actions" style="flex-direction:column; gap: 1vh;">
+                <button class="btn-primary" onclick="restartQuiz()">
+                    Jogar novamente
+                </button>
+                <button class="btn-secondary" onclick="gotoRanking()">
+                    Dashboard
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+function restartQuiz(){
+    currentQuestion = 1;
+    selectedAnswers = [];
+    answers = [];
+    mountQuiz();
+}
+
+function openQuiz(){
+    if(!isLogged()){
+        window.location = "login.html";
+        return;
     }
 
-    function isLogged(){
-        if(sessionStorage.getItem("id") == null){
-            return false;
-        }
+    currentQuestion = 1;
+    selectedAnswers = [];
 
-        return true;
+    getQuiz();
+
+    document.getElementById("quiz").style.display = "flex";
+}
+
+function getQuiz(){
+    fetch("/quiz/getQuiz/1")
+    .then(res=>res.json())
+    .then(data=>{
+        quiz = data;
+        mountQuiz();
+    })
+    .catch(err=>{
+        console.log("Erro ao pegar quiz:", err);
+    });
+}
+
+function gotoDash(){
+    if(isLogged()){
+        window.location = "/dashboard";
+        return;
     }
+
+    window.location = "login.html";
+}
+
+function isLogged(){
+    return sessionStorage.getItem("id") != null;
+}
+
+
 </script>
